@@ -9,20 +9,25 @@ def racineCarre(nb):
 # Polynominale 2
 
 def neutreEquation(equation, delta):
+    print("The solution is:")
+    result = (-equation[1]) / (2 * equation[0])
+    print(result)
     pass
 
 def positiveEquation(equation, delta):
+    print("Discriminant is strictly positive, the two solutions are:")
+    result = ((-equation[1]) + racineCarre(delta)) / (2 * equation[0])
+    print(result)
+    result = ((-equation[1]) - racineCarre(delta)) / (2 * equation[0])
+    print(result)
     pass
 
 def negativeEquation():
-    
+    print("Discriminant is strictly negative, there is not solution.")
     pass
 
-def calcPoly2(form):
-    for x in form:
-        print(x)
+def calcDelta(form):
     result = form[1]**2 - 4 * form[0] * form[2]
-    print(result)
     return result
 
 def polynominale2(equation):
@@ -33,12 +38,12 @@ def polynominale2(equation):
         form[1] *= -1
     if (equation[2][0] == "-"):
         form[2] *= -1
-    delta = calcPoly2(form)
+    delta = calcDelta(form)
     if delta > 0:
-        positiveEquation(equation, delta)
+        positiveEquation(form, delta)
     elif delta == 0:
-        neutreEquation(equation, delta)
-    else
+        neutreEquation(form, delta)
+    else:
         negativeEquation()
     pass
 
@@ -47,6 +52,23 @@ def polynominale2(equation):
 # later
 def reduceForm():
     pass
+
+def sortArrEquation(arr):
+    a = []
+    b = []
+    c = []
+    for x in arr:
+        if x[3][2:] == "0":
+            a = x
+        elif x[3][2:] == "1":
+            b = x
+        elif x[3][2:] == "2":
+            c = x
+        else:
+            print("error")
+            sys.exit(1)
+    return [c, b, a]
+
 
 def createArrEquation(arr):
     equation = [['', '', '', ''], ['', '', '', ''], ['', '', '', '']]
@@ -67,9 +89,8 @@ def createArrEquation(arr):
 
 def parseArg(arg):
     arr = arg.split()
-    for line in arr:
-        print(line)
     arr = createArrEquation(arr)
+    arr = sortArrEquation(arr)
     return arr
 
 def main(argv):
@@ -78,7 +99,6 @@ def main(argv):
         print("Own argument require")
         return
     equation = parseArg(argv[0])
-    print(equation)
     polynominale2(equation)
 
 
