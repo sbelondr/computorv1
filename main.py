@@ -1,24 +1,31 @@
 #!/usr/bin/python
 
 import sys
-# import array
+
+def returnError():
+    print("Unexpected syntax")
+    sys.exit()
+
+def ft_division(a, b):
+    if a == 0 or b == 0:
+        return 0
+    return a / b
 
 def racineCarre(nb):
     return (nb**(0.5))
 
 # Polynominale 2
-
 def neutreEquation(equation, delta):
     print("The solution is:")
-    result = (-equation[1]) / (2 * equation[0])
+    result = ft_division(-equation[1], (2 * equation[0]))
     print(result)
     pass
 
 def positiveEquation(equation, delta):
     print("Discriminant is strictly positive, the two solutions are:")
-    result = ((-equation[1]) + racineCarre(delta)) / (2 * equation[0])
+    result = ft_division(((-equation[1]) + racineCarre(delta)), (2 * equation[0]))
     print(result)
-    result = ((-equation[1]) - racineCarre(delta)) / (2 * equation[0])
+    result = ft_division(((-equation[1]) - racineCarre(delta)), (2 * equation[0]))
     print(result)
     pass
 
@@ -31,67 +38,153 @@ def calcDelta(form):
     return result
 
 def polynominale2(equation):
-    form = [float(equation[0][1]), float(equation[1][1]), float(equation[2][1])]
-    if (equation[0][0] == "-"):
-        form[0] *= -1
-    if (equation[1][0] == "-"):
-        form[1] *= -1
-    if (equation[2][0] == "-"):
-        form[2] *= -1
-    delta = calcDelta(form)
+    delta = calcDelta(equation)
     if delta > 0:
-        positiveEquation(form, delta)
+        positiveEquation(equation, delta)
     elif delta == 0:
-        neutreEquation(form, delta)
+        neutreEquation(equation, delta)
     else:
         negativeEquation()
     pass
 
 # Fin polynominale 2
 
-# later
-def reduceForm():
-    pass
+# First degre
+def firstDegre(equation):
+    print("Equation first degree")
+    print(ft_division((0 - equation[2]), equation[1]))
+# Fin
 
-def sortArrEquation(arr):
-    a = []
-    b = []
-    c = []
-    for x in arr:
-        if x[3][2:] == "0":
-            a = x
-        elif x[3][2:] == "1":
-            b = x
-        elif x[3][2:] == "2":
-            c = x
-        else:
-            print("error")
-            sys.exit(1)
-    return [c, b, a]
+def determineMode(c):
+    if (c == 'X'):
+        return (0)
+    elif c >= '0' and c <= '9':
+        return (1)
+    elif c == '+' or c == '-':
+        return (2)
+    elif c == '*' or c == '/':
+        return (3)
+    elif c == '^':
+        return (4)
+    elif c == '.':
+        return 5
+    elif c == '=':
+        return (6)
+    else:
+        returnError()
 
+# create group with separate by sign + or -
+def parseBySign(lst):
+    lenLst = len(lst)
+    newLst = list()
+    start = 0
+    end = 1
+    returnSign = 0
 
-def createArrEquation(arr):
-    equation = [['', '', '', ''], ['', '', '', ''], ['', '', '', '']]
+    while (end < lenLst):
+        if lst[end][0] == 2:
+            if returnSign == 1:
+                if lst[start][1] == '+':
+                    lst[start][1] = '-'
+                else:
+                    lst[start][1] = '+'
+            newLst.append(lst[start: end])
+            start = end
+        elif lst[end][0] == 6:
+            returnSign = 1
+            newLst.append(lst[start: end])
+            start = end
+            if lst[start + 1][0] != 2:
+                lst[start][0] = 2
+                lst[start][1] = '+'
+            else:
+                start += 1
+            end = start
+        end += 1
+    if (start != end):
+        if returnSign == 1:
+            if lst[start][1] == '+':
+                lst[start][1] = '-'
+            else:
+                lst[start][1] = '+'
+        newLst.append(lst[start:end])
+    return newLst
+
+def reduce(lst):
+    line = len(lst)
     i = 0
-    j = 0
-    if arr[0] != "-" and arr[0] != "+":
-        arr.insert(0, "+")
-    for line in arr:
-        equation[j][i] = line
-        if i >= 3:
-            i = 0
-            j += 1
-        else:
-            i += 1
-        if (j > 2):
-            break
-    return equation
+    final = [0, 0, 0]
+    while i < line:
+        isX = 0
+        nb = 1
+        sign = '+'
+        checkError = 0
+        for x in lst[i]:
+            if (checkError == 0 and x[0] == 2):
+                sign = x[1]
+            if (checkError != 0 and x[0] == 2):
+                returnError()
+            if (checkError == 1 and x[0] == 1):
+                nb = float(x[1])
+            if (checkError != 1 and x[0] == 1):
+                returnError()
+            if checkError != 2 and x[0] == 3:
+                returnError()
+            if (checkError == 3 and x[0] == 7):
+                isX = int(x[1])
+            if (checkError != 3 and x[0] == 7):
+                returnError()
+            checkError += 1
+        if (sign == '-'):
+            nb *= -1
+        final[isX] += nb
+        i += 1
+    final = [final[2], final[1], final[0]]
+    return final
 
 def parseArg(arg):
-    arr = arg.split()
-    arr = createArrEquation(arr)
-    arr = sortArrEquation(arr)
-    return arr
+    i = 0
+    row = -1
+    lst = list()
+    # cpy = arg
+
+    arg = arg.replace(' ', '')
+    # add sign if is not here in first character
+    if arg[0] != '+' and arg[0] != '-':
+        arg = '+' + arg
+
+    lenArg = len(arg)
+    while i < lenArg:
+        ret = determineMode(arg[i])
+        # is ^
+        if ret == 4:
+            if lst[row][0] == 0 and determineMode(arg[i + 1]) == 1:
+                lst[row][0] = 7
+                lst[row][1] = arg[i + 1]
+                i += 2
+                while i < lenArg and (determineMode(arg[i]) == 1 or determineMode(arg[i]) == 5):
+                    lst[row][1] = lst[row][1] + arg[i]
+                    i += 1
+            else:
+                print("Unspected syntax")
+                sys.exit()
+        # is number
+        elif ret == 1:
+            row += 1
+            lst.append([ret, arg[i]])
+            i += 1
+            while i < lenArg and (determineMode(arg[i]) == 1 or determineMode(arg[i]) == 5):
+                lst[row][1] = lst[row][1] + arg[i]
+                i += 1
+        # other
+        else:
+            row += 1
+            lst.append([ret, arg[i]])
+            i += 1
+    lst = parseBySign(lst)
+    lst = reduce(lst)
+    print(lst)
+    return lst
 
 def main(argv):
     sz = len(argv)
@@ -99,9 +192,10 @@ def main(argv):
         print("Own argument require")
         return
     equation = parseArg(argv[0])
-    polynominale2(equation)
-
-
+    if equation[0] == 0:
+        firstDegre(equation)
+    else:
+        polynominale2(equation)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
