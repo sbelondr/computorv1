@@ -19,7 +19,6 @@ def neutreEquation(equation, delta):
     print("The solution is:")
     result = ft_division(-equation[1], (2 * equation[0]))
     print(result)
-    pass
 
 def positiveEquation(equation, delta):
     print("Discriminant is strictly positive, the two solutions are:")
@@ -27,17 +26,16 @@ def positiveEquation(equation, delta):
     print(result)
     result = ft_division(((-equation[1]) - racineCarre(delta)), (2 * equation[0]))
     print(result)
-    pass
 
 def negativeEquation():
     print("Discriminant is strictly negative, there is not solution.")
-    pass
 
 def calcDelta(form):
     result = form[1]**2 - 4 * form[0] * form[2]
     return result
 
 def polynominale2(equation):
+    print("Polynomial degree: 2")
     delta = calcDelta(equation)
     if delta > 0:
         positiveEquation(equation, delta)
@@ -45,15 +43,15 @@ def polynominale2(equation):
         neutreEquation(equation, delta)
     else:
         negativeEquation()
-    pass
 
 # Fin polynominale 2
 
 # First degre
+# ( result - (n of X^0) ) / n of X^1
 def firstDegre(equation):
-    print("Equation first degree")
+    print("Polynomial degree: 1")
+    print("The soluce is:")
     print(ft_division((0 - equation[2]), equation[1]))
-# Fin
 
 def determineMode(c):
     if (c == 'X'):
@@ -135,6 +133,8 @@ def reduce(lst):
             if (checkError != 3 and x[0] == 7):
                 returnError()
             checkError += 1
+        if (checkError != 4):
+            returnError()
         if (sign == '-'):
             nb *= -1
         final[isX] += nb
@@ -146,7 +146,6 @@ def parseArg(arg):
     i = 0
     row = -1
     lst = list()
-    # cpy = arg
 
     arg = arg.replace(' ', '')
     # add sign if is not here in first character
@@ -183,8 +182,32 @@ def parseArg(arg):
             i += 1
     lst = parseBySign(lst)
     lst = reduce(lst)
-    print(lst)
     return lst
+
+def displaySign(src, first):
+    floatValue = repr(src)
+    if floatValue[0] != '+' and floatValue[0] != '-':
+            floatValue = '+' + floatValue
+    if (first and floatValue[0] == '+'):
+        floatValue = floatValue[1:]
+    else:
+        floatValue = floatValue[0] + ' ' + floatValue[1:]
+    return floatValue
+
+def displayReduceForm(equation):
+    first = 1
+    strFinal = "Reduced form: "
+    if equation[0] != 0:
+        tmp = displaySign(equation[0], first)
+        strFinal += tmp + " * X^2 "
+        first = 0
+    if equation[1] != 0:
+        tmp = displaySign(equation[1], first)
+        strFinal += tmp + " * X^1 "
+        first = 0
+    tmp = displaySign(equation[2], first)
+    strFinal += tmp + " * X^0 = 0"
+    print(strFinal)
 
 def main(argv):
     sz = len(argv)
@@ -192,7 +215,10 @@ def main(argv):
         print("Own argument require")
         return
     equation = parseArg(argv[0])
-    if equation[0] == 0:
+    displayReduceForm(equation)
+    if equation[0] == 0 and equation[1] == 0:
+        print("Any number can be a solution")
+    elif equation[0] == 0:
         firstDegre(equation)
     else:
         polynominale2(equation)
