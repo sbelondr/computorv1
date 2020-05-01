@@ -2,8 +2,16 @@
 
 import sys
 
+class bcolors:
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    GRAY = '\033[97m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    END = '\033[0m'
+
 def returnError():
-    print("Unexpected syntax")
+    print(bcolors.FAIL + "Unexpected syntax" + bcolors.END)
     sys.exit()
 
 def ft_division(a, b):
@@ -15,32 +23,40 @@ def racineCarre(nb):
     return (nb**(0.5))
 
 # Polynominale 2
-def neutreEquation(equation, delta):
-    print("The solution is:")
+def neutreEquation(equation, delta, modeDebug):
+    print(bcolors.BLUE + "The solution is:" + bcolors.END)
+    if (modeDebug):
+        print(bcolors.GRAY + "Equation: -" + repr(equation[1]) + " / ( 2 * " + repr(equation[0]) + " )" + bcolors.END)
     result = ft_division(-equation[1], (2 * equation[0]))
-    print(result)
+    print(bcolors.GREEN + repr(result) + bcolors.END)
 
-def positiveEquation(equation, delta):
-    print("Discriminant is strictly positive, the two solutions are:")
+def positiveEquation(equation, delta, modeDebug):
+    print(bcolors.BLUE + "Discriminant is strictly positive, the two solutions are:" + bcolors.END)
+    if modeDebug:
+        print(bcolors.GRAY + "First equation: ( " + repr(-equation[1]) + " + " + repr(delta) + "^1/2 ) / ( 2 * " + repr(equation[0]) + " ):" + bcolors.END)
     result = ft_division(((-equation[1]) + racineCarre(delta)), (2 * equation[0]))
-    print(result)
+    print(bcolors.GREEN + repr(result) + bcolors.END)
+    if modeDebug:
+        print("\n" + bcolors.GRAY + "Second equation: ( " + repr(-equation[1]) + " - " + repr(delta) + "^1/2 ) / ( 2 * " + repr(equation[0]) + " ):" + bcolors.END)
     result = ft_division(((-equation[1]) - racineCarre(delta)), (2 * equation[0]))
-    print(result)
+    print(bcolors.GREEN + repr(result) + bcolors.END)
 
 def negativeEquation():
-    print("Discriminant is strictly negative, there is not solution.")
+    print(bcolors.BLUE + "Discriminant is strictly negative, there is not solution." + bcolors.END)
 
-def calcDelta(form):
+def calcDelta(form, modeDebug):
     result = form[1]**2 - 4 * form[0] * form[2]
+    if modeDebug:
+        print(bcolors.GRAY + "Delta: " + repr(result) + bcolors.END)
     return result
 
-def polynominale2(equation):
-    print("Polynomial degree: 2")
-    delta = calcDelta(equation)
+def polynominale2(equation, modeDebug):
+    print(bcolors.BLUE + "Polynomial degree: 2" + bcolors.END)
+    delta = calcDelta(equation, modeDebug)
     if delta > 0:
-        positiveEquation(equation, delta)
+        positiveEquation(equation, delta, modeDebug)
     elif delta == 0:
-        neutreEquation(equation, delta)
+        neutreEquation(equation, delta, modeDebug)
     else:
         negativeEquation()
 
@@ -48,10 +64,12 @@ def polynominale2(equation):
 
 # First degre
 # ( result - (n of X^0) ) / n of X^1
-def firstDegre(equation):
-    print("Polynomial degree: 1")
-    print("The soluce is:")
-    print(ft_division((0 - equation[2]), equation[1]))
+def firstDegre(equation, modeDebug):
+    print(bcolors.BLUE + "Polynomial degree: 1" + bcolors.END)
+    print(bcolors.BLUE + "The soluce is:" + bcolors.END)
+    if modeDebug:
+        print(bcolors.GRAY + "Equation: ( 0 - " + repr(equation[2]) + " ) / " + repr(equation[1]) + bcolors.END)
+    print(bcolors.GREEN + repr(ft_division((0 - equation[2]), equation[1])) + bcolors.END)
 
 def determineMode(c):
     if (c == 'X'):
@@ -60,7 +78,7 @@ def determineMode(c):
         return (1)
     elif c == '+' or c == '-':
         return (2)
-    elif c == '*' or c == '/':
+    elif c == '*':
         return (3)
     elif c == '^':
         return (4)
@@ -157,7 +175,7 @@ def parseArg(arg):
         ret = determineMode(arg[i])
         # is ^
         if ret == 4:
-            if lst[row][0] == 0 and determineMode(arg[i + 1]) == 1:
+            if lst[row][0] == 0 and (i + 1 < lenArg and determineMode(arg[i + 1]) == 1):
                 lst[row][0] = 7
                 lst[row][1] = arg[i + 1]
                 i += 2
@@ -165,8 +183,7 @@ def parseArg(arg):
                     lst[row][1] = lst[row][1] + arg[i]
                     i += 1
             else:
-                print("Unspected syntax")
-                sys.exit()
+                returnError()
         # is number
         elif ret == 1:
             row += 1
@@ -207,21 +224,36 @@ def displayReduceForm(equation):
         first = 0
     tmp = displaySign(equation[2], first)
     strFinal += tmp + " * X^0 = 0"
-    print(strFinal)
+    print(bcolors.WARNING + strFinal + bcolors.END)
+
+def verifArgument(argv):
+    lenArgv = len(argv)
+    if (lenArgv == 1):
+        return 1
+    elif (lenArgv == 2):
+        if argv[0] == "-v":
+            return 2
+    print(bcolors.FAIL + "computorv1: error argument" + bcolors.END)
+    print(bcolors.WARNING + "./computor [-v] <equation>" + bcolors.END)
+    return (0)
 
 def main(argv):
-    sz = len(argv)
-    if sz == 0 or sz > 1:
-        print("Own argument require")
-        return
-    equation = parseArg(argv[0])
+    modeDebug = 0
+    checkArg = verifArgument(argv)
+    if checkArg == 0:
+        sys.exit()
+    if checkArg == 2:
+        modeDebug = 1
+        equation = parseArg(argv[1])
+    else:
+        equation = parseArg(argv[0])
     displayReduceForm(equation)
     if equation[0] == 0 and equation[1] == 0:
         print("Any number can be a solution")
     elif equation[0] == 0:
-        firstDegre(equation)
+        firstDegre(equation, modeDebug)
     else:
-        polynominale2(equation)
+        polynominale2(equation, modeDebug)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
