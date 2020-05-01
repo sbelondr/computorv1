@@ -6,7 +6,7 @@
 #    By: samuel <samuel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/05/01 13:07:23 by samuel           ###   ########.fr        #
+#    Updated: 2020/05/01 14:50:32 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,16 +32,7 @@ def ft_division(a, b):
 def racineCarre(nb):
     return (nb**(0.5))
 
-# Polynominale 2
-def neutreEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "The solution is:" + bcolors.END)
-    if (modeDebug):
-        print(bcolors.GRAY + "Equation: -" + repr(equation[1]) + " / ( 2 * " + repr(equation[0]) + " )" + bcolors.END)
-    result = ft_division(-equation[1], (2 * equation[0]))
-    print(bcolors.GREEN + repr(result) + bcolors.END)
-
-def positiveEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is strictly positive, the two solutions are:" + bcolors.END)
+def launchEquation(equation, delta, modeDebug):
     if modeDebug:
         print(bcolors.GRAY + "First equation: ( " + repr(-equation[1]) + " + " + repr(delta) + "^1/2 ) / ( 2 * " + repr(equation[0]) + " ):" + bcolors.END)
     result = ft_division(((-equation[1]) + racineCarre(delta)), (2 * equation[0]))
@@ -51,8 +42,22 @@ def positiveEquation(equation, delta, modeDebug):
     result = ft_division(((-equation[1]) - racineCarre(delta)), (2 * equation[0]))
     print(bcolors.GREEN + repr(result) + bcolors.END)
 
-def negativeEquation():
-    print(bcolors.BLUE + "Discriminant is strictly negative, there is not solution." + bcolors.END)
+
+# Polynominale 2
+def neutreEquation(equation, delta, modeDebug):
+    print(bcolors.BLUE + "Discriminant is 0. The solution is:" + bcolors.END)
+    if (modeDebug):
+        print(bcolors.GRAY + "Equation: -" + repr(equation[1]) + " / ( 2 * " + repr(equation[0]) + " )" + bcolors.END)
+    result = ft_division(-equation[1], (2 * equation[0]))
+    print(bcolors.GREEN + repr(result) + bcolors.END)
+
+def positiveEquation(equation, delta, modeDebug):
+    print(bcolors.BLUE + "Discriminant is strictly positive, the two solutions are:" + bcolors.END)
+    launchEquation(equation, delta, modeDebug)
+
+def negativeEquation(equation, delta, modeDebug):
+    print(bcolors.BLUE + "Discriminant is strictly negative, the two solution are:" + bcolors.END)
+    launchEquation(equation, -delta, modeDebug)
 
 def calcDelta(form, modeDebug):
     result = form[1]**2 - 4 * form[0] * form[2]
@@ -68,7 +73,7 @@ def polynominale2(equation, modeDebug):
     elif delta == 0:
         neutreEquation(equation, delta, modeDebug)
     else:
-        negativeEquation()
+        negativeEquation(equation, delta, modeDebug)
 
 # First degre
 # ( result - (n of X^0) ) / n of X^1
@@ -163,6 +168,9 @@ def reduce(lst):
             returnError()
         if (sign == '-'):
             nb *= -1
+        if isX > 2:
+            print(bcolors.FAIL + "The polynomial degree " + repr(isX) + " is stricly greater than 2, I can't solve." + bcolors.END)
+            sys.exit()
         final[isX] += nb
         i += 1
     final = [final[2], final[1], final[0]]
@@ -174,6 +182,10 @@ def parseArg(arg):
     lst = list()
 
     arg = arg.replace(' ', '')
+    arg = arg.replace('\n', '')
+    arg = arg.replace('\r', '')
+    if (arg == ""):
+        returnError()
     # add sign if is not here in first character
     if arg[0] != '+' and arg[0] != '-':
         arg = '+' + arg
@@ -234,6 +246,10 @@ def displayReduceForm(equation):
     strFinal += tmp + " * X^0 = 0"
     print(bcolors.WARNING + strFinal + bcolors.END)
 
+def errorMessage():
+    print(bcolors.FAIL + "computorv1: error argument" + bcolors.END)
+    print(bcolors.WARNING + "./computor [-v] <equation>" + bcolors.END)
+
 def verifArgument(argv):
     lenArgv = len(argv)
     if (lenArgv == 1):
@@ -241,8 +257,7 @@ def verifArgument(argv):
     elif (lenArgv == 2):
         if argv[0] == "-v":
             return 2
-    print(bcolors.FAIL + "computorv1: error argument" + bcolors.END)
-    print(bcolors.WARNING + "./computor [-v] <equation>" + bcolors.END)
+    errorMessage()
     return (0)
 
 def main(argv):
@@ -257,7 +272,7 @@ def main(argv):
         equation = parseArg(argv[0])
     displayReduceForm(equation)
     if equation[0] == 0 and equation[1] == 0:
-        print("Any number can be a solution")
+        print("All real number can be a solution")
     elif equation[0] == 0:
         firstDegre(equation, modeDebug)
     else:
