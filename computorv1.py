@@ -6,7 +6,7 @@
 #    By: samuel <samuel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/05/01 14:50:32 by samuel           ###   ########.fr        #
+#    Updated: 2020/05/02 13:58:36 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,13 @@ def positiveEquation(equation, delta, modeDebug):
 
 def negativeEquation(equation, delta, modeDebug):
     print(bcolors.BLUE + "Discriminant is strictly negative, the two solution are:" + bcolors.END)
-    launchEquation(equation, -delta, modeDebug)
+    delta = -delta
+    if modeDebug:
+        print(bcolors.GRAY + repr(-equation[1])+ " / (2 * " + repr(equation[0])+ ") + i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0]) + ")) " + bcolors.END)
+    print(bcolors.GREEN + repr(ft_division(-equation[1], (2 * equation[0]))) + " + i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))) + bcolors.END)
+    if modeDebug:
+        print(bcolors.GRAY + repr(-equation[1])+ " / (2 * " + repr(equation[0])+ ") - i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0]) + ")) " + bcolors.END)
+    print(bcolors.GREEN + repr(ft_division(-equation[1], (2 * equation[0]))) + " - i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))) + bcolors.END)
 
 def calcDelta(form, modeDebug):
     result = form[1]**2 - 4 * form[0] * form[2]
@@ -272,7 +278,10 @@ def main(argv):
         equation = parseArg(argv[0])
     displayReduceForm(equation)
     if equation[0] == 0 and equation[1] == 0:
-        print("All real number can be a solution")
+        if equation[2] < 0:
+            print("No solution")
+        else:
+            print("All real number can be a solution")
     elif equation[0] == 0:
         firstDegre(equation, modeDebug)
     else:
