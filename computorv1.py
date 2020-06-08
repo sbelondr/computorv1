@@ -3,83 +3,25 @@
 #                                                         :::      ::::::::    #
 #    computorv1.py                                      :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: samuel <samuel@student.42.fr>              +#+  +:+       +#+         #
+#    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/05/02 13:58:36 by samuel           ###   ########.fr        #
+#    Updated: 2020/06/08 11:17:40 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import sys
 
-class bcolors:
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    GRAY = '\033[97m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    END = '\033[0m'
+from secondDegre import *
+from colors import bcolors
+from myMath import ft_division, racineCarre
+from display import displayReduceForm, displaySign
+
+
 
 def returnError():
     print(bcolors.FAIL + "Unexpected syntax" + bcolors.END)
     sys.exit()
-
-def ft_division(a, b):
-    if a == 0 or b == 0:
-        return 0
-    return a / b
-
-def racineCarre(nb):
-    return (nb**(0.5))
-
-def launchEquation(equation, delta, modeDebug):
-    if modeDebug:
-        print(bcolors.GRAY + "First equation: ( " + repr(-equation[1]) + " + " + repr(delta) + "^1/2 ) / ( 2 * " + repr(equation[0]) + " ):" + bcolors.END)
-    result = ft_division(((-equation[1]) + racineCarre(delta)), (2 * equation[0]))
-    print(bcolors.GREEN + repr(result) + bcolors.END)
-    if modeDebug:
-        print("\n" + bcolors.GRAY + "Second equation: ( " + repr(-equation[1]) + " - " + repr(delta) + "^1/2 ) / ( 2 * " + repr(equation[0]) + " ):" + bcolors.END)
-    result = ft_division(((-equation[1]) - racineCarre(delta)), (2 * equation[0]))
-    print(bcolors.GREEN + repr(result) + bcolors.END)
-
-
-# Polynominale 2
-def neutreEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is 0. The solution is:" + bcolors.END)
-    if (modeDebug):
-        print(bcolors.GRAY + "Equation: -" + repr(equation[1]) + " / ( 2 * " + repr(equation[0]) + " )" + bcolors.END)
-    result = ft_division(-equation[1], (2 * equation[0]))
-    print(bcolors.GREEN + repr(result) + bcolors.END)
-
-def positiveEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is strictly positive, the two solutions are:" + bcolors.END)
-    launchEquation(equation, delta, modeDebug)
-
-def negativeEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is strictly negative, the two solution are:" + bcolors.END)
-    delta = -delta
-    if modeDebug:
-        print(bcolors.GRAY + repr(-equation[1])+ " / (2 * " + repr(equation[0])+ ") + i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0]) + ")) " + bcolors.END)
-    print(bcolors.GREEN + repr(ft_division(-equation[1], (2 * equation[0]))) + " + i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))) + bcolors.END)
-    if modeDebug:
-        print(bcolors.GRAY + repr(-equation[1])+ " / (2 * " + repr(equation[0])+ ") - i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0]) + ")) " + bcolors.END)
-    print(bcolors.GREEN + repr(ft_division(-equation[1], (2 * equation[0]))) + " - i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))) + bcolors.END)
-
-def calcDelta(form, modeDebug):
-    result = form[1]**2 - 4 * form[0] * form[2]
-    if modeDebug:
-        print(bcolors.GRAY + "Delta: " + repr(result) + bcolors.END)
-    return result
-
-def polynominale2(equation, modeDebug):
-    print(bcolors.BLUE + "Polynomial degree: 2" + bcolors.END)
-    delta = calcDelta(equation, modeDebug)
-    if delta > 0:
-        positiveEquation(equation, delta, modeDebug)
-    elif delta == 0:
-        neutreEquation(equation, delta, modeDebug)
-    else:
-        negativeEquation(equation, delta, modeDebug)
 
 # First degre
 # ( result - (n of X^0) ) / n of X^1
@@ -226,31 +168,6 @@ def parseArg(arg):
     lst = parseBySign(lst)
     lst = reduce(lst)
     return lst
-
-def displaySign(src, first):
-    floatValue = repr(src)
-    if floatValue[0] != '+' and floatValue[0] != '-':
-            floatValue = '+' + floatValue
-    if (first and floatValue[0] == '+'):
-        floatValue = floatValue[1:]
-    else:
-        floatValue = floatValue[0] + ' ' + floatValue[1:]
-    return floatValue
-
-def displayReduceForm(equation):
-    first = 1
-    strFinal = "Reduced form: "
-    if equation[0] != 0:
-        tmp = displaySign(equation[0], first)
-        strFinal += tmp + " * X^2 "
-        first = 0
-    if equation[1] != 0:
-        tmp = displaySign(equation[1], first)
-        strFinal += tmp + " * X^1 "
-        first = 0
-    tmp = displaySign(equation[2], first)
-    strFinal += tmp + " * X^0 = 0"
-    print(bcolors.WARNING + strFinal + bcolors.END)
 
 def errorMessage():
     print(bcolors.FAIL + "computorv1: error argument" + bcolors.END)
