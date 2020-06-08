@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:07 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/08 15:59:10 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/08 16:08:11 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,14 @@ def displayReduceForm(equation):
     polynominal = 0
 
     for x in equation:
-        if x != 0 or (sz - 1) == 0:
+        if x != 0: # or (sz - 1) == 0:
             tmp = displaySign(x, first)
             first = False
             strFinal += tmp + ' * X^' + str(sz - 1) + ' '
             if sz - 1 > polynominal:
                 polynominal = sz - 1
         sz -= 1
-    strFinal += '= 0'
-    print(bcolors.WARNING + strFinal + bcolors.END)
-    print(bcolors.BLUE + "Polynomial degree: " + str(polynominal) + bcolors.END)
+    if first == False:
+        strFinal += '= 0'
+        print(bcolors.WARNING + strFinal + bcolors.END)
+        print(bcolors.BLUE + "Polynomial degree: " + str(polynominal) + bcolors.END)
