@@ -1,6 +1,21 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    display.py                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/06/08 15:59:07 by sbelondr          #+#    #+#              #
+#    Updated: 2020/06/08 15:59:10 by sbelondr         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 from colors import bcolors
 
 def displaySign(src, first):
+    '''
+    if it's the first and if the sign is + so we don't display the sign
+    '''
     floatValue = repr(src)
     if floatValue[0] != '+' and floatValue[0] != '-':
             floatValue = '+' + floatValue
@@ -11,16 +26,19 @@ def displaySign(src, first):
     return floatValue
 
 def displayReduceForm(equation):
-    first = 1
-    strFinal = "Reduced form: "
-    if equation[0] != 0:
-        tmp = displaySign(equation[0], first)
-        strFinal += tmp + " * X^2 "
-        first = 0
-    if equation[1] != 0:
-        tmp = displaySign(equation[1], first)
-        strFinal += tmp + " * X^1 "
-        first = 0
-    tmp = displaySign(equation[2], first)
-    strFinal += tmp + " * X^0 = 0"
+    first = True
+    sz = len(equation)
+    strFinal = 'Reduced form: '
+    polynominal = 0
+
+    for x in equation:
+        if x != 0 or (sz - 1) == 0:
+            tmp = displaySign(x, first)
+            first = False
+            strFinal += tmp + ' * X^' + str(sz - 1) + ' '
+            if sz - 1 > polynominal:
+                polynominal = sz - 1
+        sz -= 1
+    strFinal += '= 0'
     print(bcolors.WARNING + strFinal + bcolors.END)
+    print(bcolors.BLUE + "Polynomial degree: " + str(polynominal) + bcolors.END)

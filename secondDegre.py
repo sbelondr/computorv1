@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    secondDegre.py                                     :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/06/08 16:00:16 by sbelondr          #+#    #+#              #
+#    Updated: 2020/06/08 16:00:27 by sbelondr         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 from colors import bcolors
 from myMath import ft_division, racineCarre, launchEquation
 
@@ -30,7 +42,6 @@ def calcDelta(form, modeDebug):
     return result
 
 def polynominale2(equation, modeDebug):
-    print(bcolors.BLUE + "Polynomial degree: 2" + bcolors.END)
     delta = calcDelta(equation, modeDebug)
     if delta > 0:
         positiveEquation(equation, delta, modeDebug)
