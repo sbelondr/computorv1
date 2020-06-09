@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/08 15:59:24 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/09 10:25:23 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ def reduce(lst):
 
             if (checkError == 3 and x[0] == 7):
                 if not x[1].isdigit():
-                    print(bcolors.FAIL + x[1] + ' is not int and computorv1 not manage polynominale float' + bcolors.END)
+                    print(bcolors.FAIL + x[1] + ' is not a int and computorv1 no manage the float degre' + bcolors.END)
                     sys.exit(-1)
                 isX = int(x[1])
             if (checkError != 3 and x[0] == 7):

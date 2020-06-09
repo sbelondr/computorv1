@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:07 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/08 16:09:17 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/09 10:27:41 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ def displayReduceForm(equation):
     polynominal = 0
 
     for x in equation:
-        if x != 0:
+        if x != 0 or (sz - 1 == 0 and first):
             tmp = displaySign(x, first)
             first = False
             strFinal += tmp + ' * X^' + str(sz - 1) + ' '
