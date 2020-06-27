@@ -74,6 +74,19 @@ def parseBySign(lst):
     return newLst
 
 def reduce(lst):
+    '''
+    X   0
+    
+    0-9 1
+    
+    +-  2
+    
+    ^   4
+
+    .   5
+    
+    =   6
+    '''
     line = len(lst)
     i = 0
     final = [0, 0, 0]
@@ -110,7 +123,11 @@ def reduce(lst):
             checkError += 1
 
         if (checkError != 4):
-            returnError()
+            # check if it's equivalent to X^0 --> sign + nb
+            if checkError == 2 and lst[i][0][0] == 2 and lst[i][1][0] == 1:
+                isX = 0
+            else:
+                returnError()
         if (sign == '-'):
             nb *= -1
         if isX > 2:
@@ -124,16 +141,43 @@ def reduce(lst):
     final = final[::-1]
     return final, isGreater
 
+def ft_remove_whitespace(arg):
+    arg = arg.replace(' ', '')
+    arg = arg.replace('\n', '')
+    arg = arg.replace('\r', '')
+    return arg
+
+def get_max(lst):
+    final = 0
+    idx = len(lst)
+
+    for x in lst:
+        if x > 0:
+            final = idx
+            break
+        idx -= 1
+
+    if final > 2:
+        lst = lst[-3:]
+    if (final > 0):
+        final -= 1
+    else:
+        final = 0
+    return lst, final
+
 def parseArg(arg):
+    '''
+        remove isGreater to reduce function
+        mettre en place si 2X fonctionne au lieu de 2*X || 2X^2 ...
+    '''
     i = 0
     row = -1
     lst = list()
 
-    arg = arg.replace(' ', '')
-    arg = arg.replace('\n', '')
-    arg = arg.replace('\r', '')
+    arg = ft_remove_whitespace(arg)
     if (arg == ""):
         returnError()
+
     # add sign if is not here in first character
     if arg[0] != '+' and arg[0] != '-':
         arg = '+' + arg
@@ -160,6 +204,11 @@ def parseArg(arg):
             while i < lenArg and (determineMode(arg[i]) == 1 or determineMode(arg[i]) == 5):
                 lst[row][1] = lst[row][1] + arg[i]
                 i += 1
+        elif ret == 0 and determineMode(arg[i + 1]) != 4:
+            row += 1
+            lst.append([7, '1'])
+            i += 1
+            # row
         # other
         else:
             row += 1
@@ -167,4 +216,6 @@ def parseArg(arg):
             i += 1
     lst = parseBySign(lst)
     lst, isGreater = reduce(lst)
+    # print('toujours la')
+    lst, isGreater = get_max(lst)
     return lst, isGreater

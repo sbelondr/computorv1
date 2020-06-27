@@ -57,7 +57,7 @@ def main(argv):
     else:
         equation, isGreater = parseArg(argv[0])
     displayReduceForm(equation)
-    if isGreater:
+    if isGreater > 2:
         print(bcolors.FAIL + "The polynomial degree is stricly greater than 2, I can't solve." + bcolors.END)
         sys.exit()
     if equation[0] == 0 and equation[1] == 0:
