@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/09 10:25:23 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/28 04:09:55 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,7 +91,6 @@ def reduce(lst):
     i = 0
     final = [0, 0, 0]
     szFinal = 2
-    isGreater = False
 
     while i < line:
         isX = 0
@@ -131,7 +130,6 @@ def reduce(lst):
         if (sign == '-'):
             nb *= -1
         if isX > 2:
-            isGreater = True
             while isX > szFinal:
                 final.append(0)
                 szFinal += 1
@@ -139,7 +137,7 @@ def reduce(lst):
         final[isX] += nb
         i += 1
     final = final[::-1]
-    return final, isGreater
+    return final
 
 def ft_remove_whitespace(arg):
     arg = arg.replace(' ', '')
@@ -149,20 +147,13 @@ def ft_remove_whitespace(arg):
 
 def get_max(lst):
     final = 0
-    idx = len(lst)
+    cpy = lst[::-1]
 
-    for x in lst:
-        if x > 0:
+    idx = 0
+    for x in cpy:
+        if x != 0:
             final = idx
-            break
-        idx -= 1
-
-    if final > 2:
-        lst = lst[-3:]
-    if (final > 0):
-        final -= 1
-    else:
-        final = 0
+        idx += 1
     return lst, final
 
 def parseArg(arg):
@@ -215,7 +206,6 @@ def parseArg(arg):
             lst.append([ret, arg[i]])
             i += 1
     lst = parseBySign(lst)
-    lst, isGreater = reduce(lst)
-    # print('toujours la')
+    lst = reduce(lst)
     lst, isGreater = get_max(lst)
     return lst, isGreater

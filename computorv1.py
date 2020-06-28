@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/06/08 15:56:59 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/28 04:09:41 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,9 @@ def main(argv):
         equation, isGreater = parseArg(argv[1])
     else:
         equation, isGreater = parseArg(argv[0])
-    displayReduceForm(equation)
+    displayReduceForm(equation, isGreater)
+    # get 3 last line (x0 x1 and x2)
+    equation = equation[-3:]
     if isGreater > 2:
         print(bcolors.FAIL + "The polynomial degree is stricly greater than 2, I can't solve." + bcolors.END)
         sys.exit()
