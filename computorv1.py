@@ -6,14 +6,14 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/06/28 04:09:41 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 02:12:05 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import sys
 
 from secondDegre import *
-from colors import bcolors
+from colors import bcolors as msg
 from myMath import ft_division, racineCarre
 from display import displayReduceForm
 from parlex import parseArg
@@ -23,15 +23,16 @@ def firstDegre(equation, modeDebug):
         First degre:
             (result - (n of X^0)) / n of X^1)
     '''
-    print(bcolors.BLUE + "The soluce is:" + bcolors.END)
+    msg.printBlue("The soluce is:")
     if modeDebug:
-        print(bcolors.GRAY + "Equation: ( 0 - " + repr(equation[2]) + " ) / " + repr(equation[1]) + bcolors.END)
-    print(bcolors.GREEN + repr(ft_division((0 - equation[2]), equation[1])) + bcolors.END)
+        msg.printGray("Equation: ( 0 - " + repr(equation[2]) + " ) / "
+                + repr(equation[1]))
+    msg.printGreen(repr(ft_division((0 - equation[2]), equation[1])))
 
 
 def errorMessage():
-    print(bcolors.FAIL + "computorv1: error argument" + bcolors.END)
-    print(bcolors.WARNING + "./computor [-v] <equation>" + bcolors.END)
+    msg.printFail("computorv1: error argument")
+    msg.printWarning("./computor [-v] <equation>")
 
 def verifArgument(argv):
     '''
@@ -60,7 +61,8 @@ def main(argv):
     # get 3 last line (x0 x1 and x2)
     equation = equation[-3:]
     if isGreater > 2:
-        print(bcolors.FAIL + "The polynomial degree is stricly greater than 2, I can't solve." + bcolors.END)
+        msg.printFail("The polynomial degree is stricly greater than 2, "
+                + "I can't solve.")
         sys.exit()
     if equation[0] == 0 and equation[1] == 0:
         if equation[2] < 0:

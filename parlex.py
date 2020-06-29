@@ -6,16 +6,16 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/28 04:09:55 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 02:08:39 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import sys
-from colors import bcolors
+from colors import bcolors as msg
 
 
 def returnError():
-    print(bcolors.FAIL + "Unexpected syntax" + bcolors.END)
+    msg.printFail('Unexpected syntax')
     sys.exit()
 
 def determineMode(c):
@@ -80,7 +80,9 @@ def reduce(lst):
     0-9 1
     
     +-  2
-    
+   
+    *   3
+
     ^   4
 
     .   5
@@ -113,16 +115,24 @@ def reduce(lst):
 
             if (checkError == 3 and x[0] == 7):
                 if not x[1].isdigit():
-                    print(bcolors.FAIL + x[1] + ' is not a int and computorv1 no manage the float degre' + bcolors.END)
+                    msg.printFail(x[1] +
+                            ' is not a int and computorv1 no manage the float degre')
                     sys.exit(-1)
                 isX = int(x[1])
             if (checkError != 3 and x[0] == 7):
-                returnError()
-
+                # format: sign X^n = sign 1 * X^n
+                if len(lst[i]) == 2 and lst[i][0][0] == 2 and lst[i][1][0] == 7:
+                    isX = int(lst[i][1][1])
+                    nb = 1.0
+                    checkError = 4
+                    lst[i] = [lst[i][0], [1, '1'], [3, '*'], lst[i][1]]
+                    break
+                else:
+                    returnError()
             checkError += 1
 
         if (checkError != 4):
-            # check if it's equivalent to X^0 --> sign + nb
+            # check if it's equivalent between X^0 and sign + nb
             if checkError == 2 and lst[i][0][0] == 2 and lst[i][1][0] == 1:
                 isX = 0
             else:

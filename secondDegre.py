@@ -6,39 +6,46 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 16:00:16 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/08 16:00:27 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 02:20:28 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-from colors import bcolors
+from colors import bcolors as msg
 from myMath import ft_division, racineCarre, launchEquation
 
 # Polynominale 2
 def neutreEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is 0. The solution is:" + bcolors.END)
+    msg.printBlue("Discriminant is 0. The solution is:")
     if (modeDebug):
-        print(bcolors.GRAY + "Equation: -" + repr(equation[1]) + " / ( 2 * " + repr(equation[0]) + " )" + bcolors.END)
+        msg.printGray("Equation: -" + repr(equation[1]) + " / ( 2 * "
+                + repr(equation[0]) + " )")
     result = ft_division(-equation[1], (2 * equation[0]))
-    print(bcolors.GREEN + repr(result) + bcolors.END)
+    msg.printGreen(repr(result))
 
 def positiveEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is strictly positive, the two solutions are:" + bcolors.END)
+    msg.printBlue("Discriminant is strictly positive, the two solutions are:")
     launchEquation(equation, delta, modeDebug)
 
 def negativeEquation(equation, delta, modeDebug):
-    print(bcolors.BLUE + "Discriminant is strictly negative, the two solution are:" + bcolors.END)
+    msg.printBlue("Discriminant is strictly negative, the two solution are:")
     delta = -delta
     if modeDebug:
-        print(bcolors.GRAY + repr(-equation[1])+ " / (2 * " + repr(equation[0])+ ") + i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0]) + ")) " + bcolors.END)
-    print(bcolors.GREEN + repr(ft_division(-equation[1], (2 * equation[0]))) + " + i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))) + bcolors.END)
+        msg.printGray(repr(-equation[1])+ " / (2 * "
+                + repr(equation[0])+ ") + i(" + repr(delta) + "^1/2 / (2 * "
+                + repr(equation[0]) + ")) ")
+    msg.printGreen(repr(ft_division(-equation[1], (2 * equation[0])))
+            + " + i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))))
     if modeDebug:
-        print(bcolors.GRAY + repr(-equation[1])+ " / (2 * " + repr(equation[0])+ ") - i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0]) + ")) " + bcolors.END)
-    print(bcolors.GREEN + repr(ft_division(-equation[1], (2 * equation[0]))) + " - i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))) + bcolors.END)
+        msg.printGray(repr(-equation[1])+ " / (2 * " + repr(equation[0])
+                + ") - i(" + repr(delta) + "^1/2 / (2 * " + repr(equation[0])
+                + ")) ")
+    msg.printGreen(repr(ft_division(-equation[1], (2 * equation[0])))
+            + " - i" + repr(ft_division(racineCarre(delta), (2 * equation[0]))))
 
 def calcDelta(form, modeDebug):
     result = form[1]**2 - 4 * form[0] * form[2]
     if modeDebug:
-        print(bcolors.GRAY + "Delta: " + repr(result) + bcolors.END)
+        msg.printGray("Delta: " + repr(result))
     return result
 
 def polynominale2(equation, modeDebug):

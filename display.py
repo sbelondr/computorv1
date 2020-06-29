@@ -6,11 +6,11 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:07 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/28 04:00:05 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 02:13:32 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-from colors import bcolors
+from colors import bcolors as msg
 
 def displaySign(src, first):
     '''
@@ -37,5 +37,5 @@ def displayReduceForm(equation, maxNb):
         sz -= 1
     if first == False:
         strFinal += '= 0'
-        print(bcolors.WARNING + strFinal + bcolors.END)
-        print(bcolors.BLUE + "Polynomial degree: " + str(maxNb) + bcolors.END)
+        msg.printWarning(strFinal)
+        msg.printBlue("Polynomial degree: " + str(maxNb))
