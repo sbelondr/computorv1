@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 03:30:17 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 05:27:56 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,80 +74,46 @@ def parseBySign(lst):
     return newLst
 
 def reduce(lst):
-    '''
-    X   0
-    
-    0-9 1
-    
-    +-  2
-   
-    *   3
-
-    ^   4
-
-    .   5
-    
-    =   6
-    '''
-    line = len(lst)
-    i = 0
     final = [0, 0, 0]
     szFinal = 2
-
-    while i < line:
-        isX = 0
-        nb = 1
-        sign = '+'
-        checkError = 0
-        for x in lst[i]:
-            if (checkError == 0 and x[0] == 2):
-                sign = x[1]
-            if (checkError != 0 and x[0] == 2):
-                returnError()
-
-            if (checkError == 1 and x[0] == 1):
-                nb = ft_strToFloat(x[1])
-            if (checkError != 1 and x[0] == 1):
-                returnError()
-
-            if checkError != 2 and x[0] == 3:
-                returnError()
-
-            if (checkError == 3 and x[0] == 7):
-                  #          ' is not a int and computorv1 no manage the float degre')
-                isX = ft_strToInt(x[1])
-            if (checkError != 3 and x[0] == 7):
-                # format: sign X^n = sign 1 * X^n
-                if len(lst[i]) == 2 and lst[i][0][0] == 2 and lst[i][1][0] == 7:
-                    isX = ft_strToInt(lst[i][1][1])
-                    nb = 1.0
-                    checkError = 4
-                    lst[i] = [lst[i][0], [1, '1'], [3, '*'], lst[i][1]]
-                    break
-                # format: sign nX^n = sign n * X^n
-                elif len(lst[i]) == 3 and lst[i][0][0] == 2 and lst[i][1][0] == 1 and lst[i][2][0] == 7:
-                    isX = ft_strToInt(lst[i][2][1])
-                    nb = ft_strToInt(lst[i][1][1])
-                    checkError = 4
-                    break
-                else:
-                    returnError()
-            checkError += 1
-
-        if (checkError != 4):
-            # check if it's equivalent between X^0 and sign + nb
-            if checkError == 2 and lst[i][0][0] == 2 and lst[i][1][0] == 1:
-                isX = 0
+    i = 0
+    lenLine = len(lst)
+    while i < lenLine:
+        degre = 0
+        nb = 0
+        x = lst[i]
+        lenX = len(x)
+        if lenX == 4:
+            if x[0][0] == 2 and x[1][0] == 1 and x[2][0] == 3 and x[3][0] == 7:
+              nb = ft_strToFloat(x[1][1])
+              degre = ft_strToInt(x[3][1])
             else:
                 returnError()
-        if (sign == '-'):
+        elif lenX == 3:
+            if x[0][0] == 2 and x[1][0] == 1 and x[2][0] == 7:
+              nb = ft_strToFloat(x[1][1])
+              degre = ft_strToInt(x[2][1])
+            else:
+                returnError()
+        elif lenX == 2:
+            if x[0][0] == 2 and x[1][0] == 1:
+              nb = ft_strToFloat(x[1][1])
+              degre = 0
+            elif x[0][0] == 2 and x[1][0] == 7:
+              nb = 1
+              degre = ft_strToInt(x[1][1])
+            else:
+                returnError()
+        else:
+            returnError()
+        if x[0][1] == '-':
             nb *= -1
-        if isX > 2:
-            while isX > szFinal:
+        if degre > 2:
+            while degre > szFinal:
                 final.append(0)
                 szFinal += 1
+        final[degre] += nb
 
-        final[isX] += nb
         i += 1
     final = final[::-1]
     return final
@@ -208,7 +174,7 @@ def parseArg(arg):
             while i < lenArg and (determineMode(arg[i]) == 1 or determineMode(arg[i]) == 5):
                 lst[row][1] = lst[row][1] + arg[i]
                 i += 1
-        elif ret == 0 and determineMode(arg[i + 1]) != 4:
+        elif ret == 0 and (lenArg <= i + 1 or determineMode(arg[i + 1]) != 4):
             row += 1
             lst.append([7, '1'])
             i += 1

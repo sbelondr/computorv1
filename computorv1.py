@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/06/29 02:12:05 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 04:53:13 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ def firstDegre(equation, modeDebug):
 
 def errorMessage():
     msg.printFail("computorv1: error argument")
-    msg.printWarning("./computor [-v] <equation>")
+    msg.printWarning("usage: python computorv1 [-v] <equation>")
 
 def verifArgument(argv):
     '''
@@ -46,6 +46,12 @@ def verifArgument(argv):
             return 2
     errorMessage()
     return (0)
+
+def zeroDegre(equation):
+    if equation[2] != 0:
+        print('No solution')
+    else:
+        print("All real number can be a solution")
 
 def main(argv):
     modeDebug = 0
@@ -68,7 +74,7 @@ def main(argv):
         if equation[2] < 0:
             print("No solution")
         else:
-            print("All real number can be a solution")
+            zeroDegre(equation)
     elif equation[0] == 0:
         firstDegre(equation, modeDebug)
     else:
