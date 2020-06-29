@@ -6,13 +6,13 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 02:08:39 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 03:30:17 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import sys
 from colors import bcolors as msg
-
+from myMath import ft_strToInt, ft_strToFloat
 
 def returnError():
     msg.printFail('Unexpected syntax')
@@ -106,7 +106,7 @@ def reduce(lst):
                 returnError()
 
             if (checkError == 1 and x[0] == 1):
-                nb = float(x[1])
+                nb = ft_strToFloat(x[1])
             if (checkError != 1 and x[0] == 1):
                 returnError()
 
@@ -114,18 +114,21 @@ def reduce(lst):
                 returnError()
 
             if (checkError == 3 and x[0] == 7):
-                if not x[1].isdigit():
-                    msg.printFail(x[1] +
-                            ' is not a int and computorv1 no manage the float degre')
-                    sys.exit(-1)
-                isX = int(x[1])
+                  #          ' is not a int and computorv1 no manage the float degre')
+                isX = ft_strToInt(x[1])
             if (checkError != 3 and x[0] == 7):
                 # format: sign X^n = sign 1 * X^n
                 if len(lst[i]) == 2 and lst[i][0][0] == 2 and lst[i][1][0] == 7:
-                    isX = int(lst[i][1][1])
+                    isX = ft_strToInt(lst[i][1][1])
                     nb = 1.0
                     checkError = 4
                     lst[i] = [lst[i][0], [1, '1'], [3, '*'], lst[i][1]]
+                    break
+                # format: sign nX^n = sign n * X^n
+                elif len(lst[i]) == 3 and lst[i][0][0] == 2 and lst[i][1][0] == 1 and lst[i][2][0] == 7:
+                    isX = ft_strToInt(lst[i][2][1])
+                    nb = ft_strToInt(lst[i][1][1])
+                    checkError = 4
                     break
                 else:
                     returnError()

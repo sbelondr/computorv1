@@ -6,11 +6,25 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:51 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 02:15:52 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/29 02:50:40 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+import sys
 from colors import bcolors as msg
+
+def ft_strToInt(src):
+    if (src.isdigit()):
+        return int(src)
+    msg.printFail('Element is not int')
+    sys.exit(-1)
+
+def ft_strToFloat(src):
+    tmp = src.replace('.', '')
+    if (tmp.isdigit()):
+        return float(src)
+    msg.printFail('Element is not float or int')
+    sys.exit(-1)
 
 def ft_division(a, b):
     if a == 0 or b == 0:
