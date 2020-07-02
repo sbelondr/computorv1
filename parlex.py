@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 05:27:56 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/06/30 03:47:12 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,10 +136,6 @@ def get_max(lst):
     return lst, final
 
 def parseArg(arg):
-    '''
-        remove isGreater to reduce function
-        mettre en place si 2X fonctionne au lieu de 2*X || 2X^2 ...
-    '''
     i = 0
     row = -1
     lst = list()
@@ -178,7 +174,6 @@ def parseArg(arg):
             row += 1
             lst.append([7, '1'])
             i += 1
-            # row
         # other
         else:
             row += 1
