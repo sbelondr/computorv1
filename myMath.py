@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:51 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/30 03:37:17 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/12/10 00:04:00 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ def ft_strToInt(src):
     sys.exit(-1)
 
 def ft_strToFloat(src):
-    tmp = src.replace('.', '')
-    if (tmp.isdigit()):
+    tmp = src.replace('.', '', 1)
+    if (tmp.find('.') == -1 and tmp.isdigit()):
         return float(src)
     msg.printFail('Element "' + src + '" is not float or int')
     sys.exit(-1)

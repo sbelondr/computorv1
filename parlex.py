@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/30 03:47:12 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/12/09 23:57:54 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,7 @@ def parseBySign(lst):
     return newLst
 
 def reduce(lst):
+    print(lst)
     final = [0, 0, 0]
     szFinal = 2
     i = 0
