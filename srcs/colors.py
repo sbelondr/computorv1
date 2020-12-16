@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 16:00:34 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 02:25:16 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/12/10 14:59:29 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,20 +20,30 @@ class bcolors:
 
     def printFail(msg):
         print(bcolors.FAIL + msg + bcolors.END)
-        pass
+
+    def printFailDebug(msg):
+        return (bcolors.FAIL + msg + bcolors.END + '\n')
 
     def printGreen(msg):
         print(bcolors.GREEN + msg + bcolors.END)
-        pass
+
+    def printGreenDebug(msg):
+        return (bcolors.GREEN + msg + bcolors.END + '\n')
 
     def printBlue(msg):
         print(bcolors.BLUE + msg + bcolors.END)
-        pass
+
+    def printBlueDebug(msg):
+        return (bcolors.BLUE + msg + bcolors.END + '\n')
 
     def printGray(msg):
         print(bcolors.GRAY + msg + bcolors.END)
-        pass
+
+    def printGrayDebug(msg):
+        return (bcolors.GRAY + msg + bcolors.END + '\n')
 
     def printWarning(msg):
         print(bcolors.WARNING + msg + bcolors.END)
-        pass
+
+    def printWarningDebug(msg):
+        return (bcolors.WARNING + msg + bcolors.END + '\n')

@@ -6,11 +6,12 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:51 by sbelondr          #+#    #+#              #
-#    Updated: 2020/12/10 00:04:00 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/12/10 14:43:46 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import sys
+#from __init__ import bcolors as msg
 from colors import bcolors as msg
 
 def ft_strToInt(src):

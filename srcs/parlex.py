@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/12/09 23:57:54 by sbelondr         ###   ########.fr        #
+#    Updated: 2020/12/10 14:33:27 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,6 @@ def parseBySign(lst):
     return newLst
 
 def reduce(lst):
-    print(lst)
     final = [0, 0, 0]
     szFinal = 2
     i = 0
@@ -110,6 +109,9 @@ def reduce(lst):
         if x[0][1] == '-':
             nb *= -1
         if degre > 2:
+            if degre > 9999999:
+                msg.printFail("Degre " + str(degre) + " is to large")
+                sys.exit(-1)
             while degre > szFinal:
                 final.append(0)
                 szFinal += 1
