@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:23 by sbelondr          #+#    #+#              #
-#    Updated: 2020/12/10 14:33:27 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/21 09:16:20 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ def determineMode(c):
         return 5
     elif c == '=':
         return (6)
+    elif c == ' ' or c == '\t' or c == '\n' or c == '\r':
+        return 7
     else:
         returnError()
 
@@ -109,7 +111,7 @@ def reduce(lst):
         if x[0][1] == '-':
             nb *= -1
         if degre > 2:
-            if degre > 9999999:
+            if degre > 99:
                 msg.printFail("Degre " + str(degre) + " is to large")
                 sys.exit(-1)
             while degre > szFinal:
@@ -122,10 +124,10 @@ def reduce(lst):
     return final
 
 def ft_remove_whitespace(arg):
-    arg = arg.replace(' ', '')
-    arg = arg.replace('\n', '')
-    arg = arg.replace('\r', '')
-    return arg
+    result = ''.join(arg.split())
+    if result[len(result) -1] == '=':
+        returnError()
+    return result
 
 def get_max(lst):
     final = 0
@@ -138,17 +140,23 @@ def get_max(lst):
         idx += 1
     return lst, final
 
+def checkEqual(arg):
+    if arg.count('=') > 1:
+        returnError()
+
 def parseArg(arg):
     i = 0
     row = -1
     lst = list()
 
-    arg = ft_remove_whitespace(arg)
-    if (arg == ""):
+    checkEqual(arg)
+    tmp = ft_remove_whitespace(arg)
+    #arg = ft_remove_whitespace(arg)
+    if (tmp == "" or tmp == "="):
         returnError()
 
     # add sign if is not here in first character
-    if arg[0] != '+' and arg[0] != '-':
+    if tmp[0] != '+' and tmp[0] != '-':
         arg = '+' + arg
 
     lenArg = len(arg)
@@ -176,6 +184,9 @@ def parseArg(arg):
         elif ret == 0 and (lenArg <= i + 1 or determineMode(arg[i + 1]) != 4):
             row += 1
             lst.append([7, '1'])
+            i += 1
+        # skip whitespace
+        elif ret == 7:
             i += 1
         # other
         else:
