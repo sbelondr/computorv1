@@ -6,36 +6,39 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:07 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 02:13:32 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/21 17:06:24 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+import sys
 from colors import bcolors as msg
 
-def displaySign(src, first):
-    '''
-    if it's the first and if the sign is + so we don't display the sign
-    '''
-    floatValue = repr(src)
-    if floatValue[0] != '+' and floatValue[0] != '-':
-            floatValue = '+' + floatValue
-    if (first and floatValue[0] == '+'):
-        floatValue = floatValue[1:]
-    else:
-        floatValue = floatValue[0] + ' ' + floatValue[1:]
-    return floatValue
+def formatEquation(key, value, first):
+    strValue = repr(value) if value >= 0 else repr(-value)
+    sign = ' ' if not first else ''
+    if value < 0:
+        sign += '- '
+    elif not first:
+        sign += '+ '
+    return sign + strValue + ' * X^' + str(key)
 
-def displayReduceForm(equation, maxNb):
+def displayReduceForm(dictioSort, dictio):
+    maxNb = 0
     first = True
-    sz = len(equation)
+    sz = len(dictioSort) - 1
     strFinal = 'Reduced form: '
-    for x in equation:
-        if x != 0 or (sz - 1 == 0 and first):
-            tmp = displaySign(x, first)
-            first = False
-            strFinal += tmp + ' * X^' + str(sz - 1) + ' '
-        sz -= 1
+    for key in dictioSort:
+        value = dictio.get(key)
+        if value != 0:
+            strFinal +=  formatEquation(key, dictio.get(key), first)
+            maxNb = key
+            if first:
+                first = not first
     if first == False:
-        strFinal += '= 0'
+        strFinal += ' = 0'
         msg.printWarning(strFinal)
         msg.printBlue("Polynomial degree: " + str(maxNb))
+    else:
+        msg.printWarning("Reduced form: 0 = 0")
+        sys.exit(-1)
+    return maxNb

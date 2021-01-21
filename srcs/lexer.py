@@ -6,23 +6,24 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/21 11:13:37 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/21 12:57:35 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/21 16:31:45 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from Sign import Symbol
+from colors import bcolors as msg
 import sys
 
-def errorMessageBis():
-    print("Not work")
-    sys.exit(-1)
+def errorMessage():
+    msg.printFail('Unexpected syntax')
+    sys.exit()
+
 
 def ftX(lst, i, sz):
     i += 1
     if i < sz:
         if lst[i][0] != Symbol.SIGN and lst[i][0] != Symbol.EQUAL:
-            errorMessageBis()
-    #if (lst[i - 1][1] != 0):
+            errorMessage()
     return lst[i - 1][1][1]
 
 def ftNumber(lst, i, sz, reverseSign, neg):
@@ -35,7 +36,7 @@ def ftNumber(lst, i, sz, reverseSign, neg):
         x = ftX(lst, i, sz)
         i += 1
     elif i < sz and lst[i][0] == Symbol.NUMBER:
-        errorMessageBis()
+        errorMessage()
     i -= 1
     return i, nb, x
 
@@ -51,7 +52,7 @@ def ftSign(lst, i, sz, reverseSign):
             neg = not neg
         nb = 1 if not neg else -1
     else:
-        errorMessageBis()
+        errorMessage()
     return i, nb, x
 
 def addValue(dictio, x, nb):
@@ -80,10 +81,8 @@ def lexer(lst):
             dictio = addValue(dictio, x, nb)
         elif lst[i][0] == Symbol.EQUAL:
             if reverseSign:
-                errorMessageBis()
+                errorMessage()
             reverseSign = True
         i += 1
     dictSort = sorted(dictio)
-    for key in dictSort:
-        print(str(key) + " - " +str(dictio.get(key)))
-    return 0
+    return dictSort, dictio

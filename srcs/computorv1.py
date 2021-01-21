@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2020/06/29 04:53:13 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/21 16:17:21 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,17 +17,17 @@ from colors import bcolors as msg
 from myMath import ft_division, racineCarre
 from display import displayReduceForm
 from parlex import parseArg
-
-def firstDegre(equation, modeDebug):
+from parser import parser
+def firstDegre(dictio, modeDebug):
     '''
         First degre:
             (result - (n of X^0)) / n of X^1)
     '''
     msg.printBlue("The soluce is:")
     if modeDebug:
-        msg.printGray("Equation: ( 0 - " + repr(equation[2]) + " ) / "
-                + repr(equation[1]))
-    msg.printGreen(repr(ft_division((0 - equation[2]), equation[1])))
+        msg.printGray("Equation: ( 0 - " + repr(dictio.get(0)) + " ) / "
+                + repr(dictio.get(1)))
+    msg.printGreen(repr(ft_division((0 - dictio.get(0)), dictio.get(1))))
 
 
 def errorMessage():
@@ -47,8 +47,8 @@ def verifArgument(argv):
     errorMessage()
     return (0)
 
-def zeroDegre(equation):
-    if equation[2] != 0:
+def zeroDegre(dictio):
+    if dictio.get(0) != 0:
         print('No solution')
     else:
         print("All real number can be a solution")
@@ -56,29 +56,29 @@ def zeroDegre(equation):
 def main(argv):
     modeDebug = 0
     checkArg = verifArgument(argv)
+    isGreater = 0
     if checkArg == 0:
         sys.exit()
     if checkArg == 2:
         modeDebug = 1
-        equation, isGreater = parseArg(argv[1])
+        dictioSort, dictio = parser(argv[1])
     else:
-        equation, isGreater = parseArg(argv[0])
-    displayReduceForm(equation, isGreater)
-    # get 3 last line (x0 x1 and x2)
-    equation = equation[-3:]
-    if isGreater > 2:
+        dictioSort, dictio = parser(argv[0])
+    maxNb = displayReduceForm(dictioSort, dictio)
+    if maxNb > 2:
         msg.printFail("The polynomial degree is stricly greater than 2, "
                 + "I can't solve.")
-        sys.exit()
-    if equation[0] == 0 and equation[1] == 0:
-        if equation[2] < 0:
-            print("No solution")
-        else:
-            zeroDegre(equation)
-    elif equation[0] == 0:
-        firstDegre(equation, modeDebug)
+        sys.exit(-1)
+    for x in range(3):
+        if not x in dictio:
+            dictio[x] = 0
+
+    if dictio.get(2) == 0 and dictio.get(1) == 0:
+        zeroDegre(dictio)
+    elif dictio.get(2) == 0:
+        firstDegre(dictio, modeDebug)
     else:
-        polynominale2(equation, modeDebug)
+        polynominale2(dictio, modeDebug)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

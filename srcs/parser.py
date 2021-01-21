@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/21 09:53:15 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/21 12:41:20 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/21 17:03:21 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,11 @@ import sys
 from lexer import lexer
 from Sign import Symbol
 from myMath import ft_strToFloat, ft_strToInt
+from colors import bcolors as msg
 
-def errorMessage(n, c):
-    print("Not work " + str(n) + ' - ' + c)
-    sys.exit(-1)
+def errorMessage():
+    msg.printFail('Unexpected syntax')
+    sys.exit()
 
 def isWhitespace(arg, i, sz):
     while i < sz and (arg[i] == ' ' \
@@ -46,9 +47,9 @@ def conditionX(arg, i, sz, sign):
         elif i == sz or (i <= sz and (arg[i] == '=' \
                 or arg[i] == '-' or arg[i] == '+')):
             return i, [Symbol.X, [Symbol.NUMBER, 1]]
-        errorMessage(i, arg[i - 1])
+        errorMessage()
     if sign == 1:
-        errorMessage(i, arg[i])
+        errorMessage()
     return i, 0
 
 def isX(arg, i, sz):
@@ -73,7 +74,9 @@ def parser(arg):
     lst = list()
     sz = len(arg)
     i = 0
+    checkExist = 0
     while (i < sz):
+        checkExist = i
         i = isWhitespace(arg, i, sz)
         i, line = isNumber(arg, i, sz, True)
         if line != 0:
@@ -93,13 +96,6 @@ def parser(arg):
         i, line = isEqual(arg[i], i, sz)
         if line != 0:
             lst.append(line)
-    return lst
-
-def main(arg):
-    lst = parser(arg[0])
-    print(lexer(lst))
-    pass
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
-
+        if checkExist == i:
+            errorMessage()
+    return lexer(lst)

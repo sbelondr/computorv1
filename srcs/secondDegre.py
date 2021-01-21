@@ -6,12 +6,12 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 16:00:16 by sbelondr          #+#    #+#              #
-#    Updated: 2020/06/29 02:20:28 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/21 16:57:23 by samuel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from colors import bcolors as msg
-from myMath import ft_division, racineCarre, launchEquation
+from myMath import checkNumber, ft_division, racineCarre, launchEquation
 
 # Polynominale 2
 def neutreEquation(equation, delta, modeDebug):
@@ -48,8 +48,10 @@ def calcDelta(form, modeDebug):
         msg.printGray("Delta: " + repr(result))
     return result
 
-def polynominale2(equation, modeDebug):
+def polynominale2(dictio, modeDebug):
+    equation = [dictio.get(2), dictio.get(1), dictio.get(0)]
     delta = calcDelta(equation, modeDebug)
+    checkNumber(delta)
     if delta > 0:
         positiveEquation(equation, delta, modeDebug)
     elif delta == 0:
