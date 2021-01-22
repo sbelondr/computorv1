@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2021/01/22 07:23:59 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/22 10:35:37 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ def main(argv):
     else:
         dictioSort, dictio = parser(argv[0])
     maxNb = displayReduceForm(dictioSort, dictio)
+    print("ro")
     if maxNb > 2:
         msg.printFail("The polynomial degree is stricly greater than 2, "
                 + "I can't solve.")
@@ -71,7 +72,6 @@ def main(argv):
     for x in range(3):
         if not x in dictio:
             dictio[x] = 0
-
     if dictio.get(2) == 0 and dictio.get(1) == 0:
         zeroDegre(dictio)
     elif dictio.get(2) == 0:

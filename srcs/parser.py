@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/21 09:53:15 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/21 17:03:21 by samuel           ###   ########.fr        #
+#    Updated: 2021/01/22 10:34:39 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,8 @@ def conditionX(arg, i, sz, sign):
 def isX(arg, i, sz):
     if arg[i] == '*':
         i = isWhitespace(arg, i + 1, sz)
+        if i >= sz:
+            errorMessage()
         return conditionX(arg, i, sz, 1)
     else:
         return conditionX(arg, i, sz, 0)
