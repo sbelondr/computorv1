@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2021/01/21 16:17:21 by samuel           ###   ########.fr        #
+#    Updated: 2021/01/22 07:23:59 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ from secondDegre import *
 from colors import bcolors as msg
 from myMath import ft_division, racineCarre
 from display import displayReduceForm
-from parlex import parseArg
 from parser import parser
 def firstDegre(dictio, modeDebug):
     '''
