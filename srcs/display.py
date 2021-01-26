@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/08 15:59:07 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/22 10:36:17 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/26 07:25:16 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ def displayReduceForm(dictioSort, dictio):
         msg.printBlue("Polynomial degree: " + str(maxNb))
     else:
         msg.printBlue("Polynomial degree: " + str(maxNb))
-        msg.printWarning("Reduced form: 0 = 0")
+        msg.printWarning("Reduced form: 0 * X^0 = 0")
         print("All real number can be a solution")
         sys.exit(-1)
     return maxNb

@@ -6,7 +6,7 @@
 #    By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/10 00:13:04 by sbelondr          #+#    #+#              #
-#    Updated: 2020/12/10 15:26:17 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/26 08:43:16 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,9 +40,21 @@ class TestDivisionMethods(unittest.TestCase):
     def test_zero(self):
         self.assertTrue(ft_division(0, 3) == 0)
         self.assertTrue(ft_division(0.0, 3) == 0)
-        self.assertTrue(ft_division(10, 0) == 0)
-        self.assertTrue(ft_division(10, 0.0) == 0)
-        self.assertTrue(ft_division(0, 0) == 0)
+        #self.assertTrue(ft_division(10, 0) == 0)
+        capturedOutput = init_output()
+        with self.assertRaises(SystemExit) as cm:
+            ft_division(10, 0)
+        reset_output();
+        self.assertEqual(cm.exception.code, -1)
+        self.assertEqual(capturedOutput.getvalue(),
+                msg.printFailDebug('Division by zero'))
+        capturedOutput = init_output()
+        with self.assertRaises(SystemExit) as cm:
+            ft_division(0, 0)
+        reset_output();
+        self.assertEqual(cm.exception.code, -1)
+        self.assertEqual(capturedOutput.getvalue(),
+                msg.printFailDebug('Division by zero'))
         self.assertTrue(ft_division(0, -12) == 0)
 
 #        # check that s.split fails when the separator is not a string

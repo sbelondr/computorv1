@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/21 09:53:15 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/22 10:34:39 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/26 09:20:21 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,8 +52,13 @@ def conditionX(arg, i, sz, sign):
         errorMessage()
     return i, 0
 
-def isX(arg, i, sz):
+def isX(arg, i, sz, lst):
+    '''
+        search: X, X^n, * X or * X^n
+    '''
     if arg[i] == '*':
+        if not (len(lst) > 0 and lst[len(lst) - 1][0] == Symbol.NUMBER):
+            errorMessage()
         i = isWhitespace(arg, i + 1, sz)
         if i >= sz:
             errorMessage()
@@ -85,7 +90,7 @@ def parser(arg):
             lst.append(line)
         if i >= sz:
             break
-        i, line = isX(arg, i, sz)
+        i, line = isX(arg, i, sz, lst)
         if line != 0:
             lst.append(line)
         if i >= sz:

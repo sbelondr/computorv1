@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 13:03:11 by samuel            #+#    #+#              #
-#    Updated: 2021/01/22 10:35:37 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/26 09:09:25 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ def firstDegre(dictio, modeDebug):
         First degre:
             (result - (n of X^0)) / n of X^1)
     '''
-    msg.printBlue("The soluce is:")
+    msg.printBlue("The solution is:")
     if modeDebug:
         msg.printGray("Equation: ( 0 - " + repr(dictio.get(0)) + " ) / "
                 + repr(dictio.get(1)))
@@ -64,7 +64,6 @@ def main(argv):
     else:
         dictioSort, dictio = parser(argv[0])
     maxNb = displayReduceForm(dictioSort, dictio)
-    print("ro")
     if maxNb > 2:
         msg.printFail("The polynomial degree is stricly greater than 2, "
                 + "I can't solve.")
