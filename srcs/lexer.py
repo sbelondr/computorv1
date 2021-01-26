@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/21 11:13:37 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/21 16:31:45 by samuel           ###   ########.fr        #
+#    Updated: 2021/01/26 09:54:59 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,8 @@ def lexer(lst):
     reverseSign = False
     sz = len(lst)
     i = 0
+    if len(lst) <= 0 or lst[len(lst) - 1][0] == Symbol.EQUAL:
+            errorMessage()
     while i < sz:
         if lst[i][0] == Symbol.SIGN:
             i, nb, x = ftSign(lst, i, sz, reverseSign)

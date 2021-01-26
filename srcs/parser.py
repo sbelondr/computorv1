@@ -6,7 +6,7 @@
 #    By: sbelondr <sbelondr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/21 09:53:15 by sbelondr          #+#    #+#              #
-#    Updated: 2021/01/26 09:20:21 by sbelondr         ###   ########.fr        #
+#    Updated: 2021/01/26 09:53:05 by sbelondr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,8 +72,10 @@ def isSign(c, i, sz):
         return i + 1, [Symbol.SIGN, c]
     return i, 0
 
-def isEqual(c, i, sz):
+def isEqual(c, i, sz, lst):
     if i < sz and (c == '='):
+        if (len(lst) <= 0):
+            errorMessage()
         return i + 1, [Symbol.EQUAL, c]
     return i, 0
 
@@ -100,7 +102,7 @@ def parser(arg):
             lst.append(line)
         if i >= sz:
             break
-        i, line = isEqual(arg[i], i, sz)
+        i, line = isEqual(arg[i], i, sz, lst)
         if line != 0:
             lst.append(line)
         if checkExist == i:
